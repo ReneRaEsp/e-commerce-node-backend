@@ -4,7 +4,6 @@ import categoryController from "../controllers/category.controller";
 const router = routerx();
 const {
   add,
-  query,
   queryById,
   queryByName,
   list,
@@ -16,11 +15,9 @@ const {
 
 router.post("/add", add);
 
-router.get("/query", query);
+router.get("/query/:id", queryById);
 
-router.get("/query-id", queryById);
-
-router.get("/query-name", queryByName);
+router.get("/query-name/:name", queryByName);
 
 router.get("/list", list);
 

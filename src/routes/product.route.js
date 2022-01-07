@@ -4,7 +4,8 @@ import productController from "../controllers/product.controller";
 const router = routerx();
 const {
   add,
-  query,
+  queryById,
+  queryByName,
   list,
   update,
   remove,
@@ -16,7 +17,9 @@ const {
 
 router.post("/add", add);
 
-router.get("/query", query);
+router.get("/query/:id", queryById);
+
+router.get("/query/:name", queryByName);
 
 router.get("/list", list);
 

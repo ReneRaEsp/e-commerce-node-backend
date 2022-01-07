@@ -5,16 +5,20 @@ const productSchema = new Schema({
     type: String,
     required: true,
     maxlength: 50,
+    trim: true,
   },
   description: {
     type: String,
     maxlength: 255,
+    trim: true,
   },
   price: {
     type: Number,
+    trim: true,
   },
   stock: {
     type: Number,
+    trim: true,
   },
   state: {
     type: Number,

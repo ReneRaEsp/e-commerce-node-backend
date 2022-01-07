@@ -20,18 +20,67 @@ export default {
       res.status(200).json(reg);
     } catch (e) {
       res.status(500).send({
-        message: "Error al intentar listar",
+        message: "Error al intentar listar productos",
       });
       next(e);
     }
   },
-  query: async (req, res, next) => {
+  queryById: async (req, res, next) => {
     try {
-    } catch (e) {}
+      const product = await Product.findById({ _id: req.params.id });
+      if (!product) {
+        res.status(404).send({
+          message: "Producto no encontrado",
+        });
+      }
+      res.status(200).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Error al intentar buscar producto",
+      });
+      next(e);
+    }
+  },
+  queryByName: async (req, res, next) => {
+    try {
+      const product = await Product.find({ name: req.params.name });
+      if (!product) {
+        res.status(404).send({
+          message: "Producto no encontrado",
+        });
+      }
+      res.status(200).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Error al intentar buscar producto",
+      });
+      next(e);
+    }
   },
   update: async (req, res, next) => {
+    const { _id, name, description, price, stock } = req.body;
     try {
-    } catch (e) {}
+      const product = await Product.findByIdAndUpdate(
+        { _id },
+        {
+          name,
+          description,
+          price,
+          stock,
+        }
+      );
+      if (!product) {
+        res.status(404).send({
+          message: "Producto no actualizado",
+        });
+      }
+      res.send(product).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Error al intentar buscar producto",
+      });
+      next(e);
+    }
   },
   addCategory: async (req, res, next) => {
     try {
@@ -119,17 +168,45 @@ export default {
       next(e);
     }
   },
-
   activate: async (req, res, next) => {
     try {
-    } catch (e) {}
+      const product = await Product.findByIdAndUpdate(
+        { _id: req.body._id },
+        { state: 1 }
+      );
+      res.status(200).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error al intentar activar",
+      });
+      next(e);
+    }
   },
   deactivate: async (req, res, next) => {
     try {
-    } catch (e) {}
+      const product = await Product.findByIdAndUpdate(
+        { _id: req.body._id },
+        { state: 0 }
+      );
+      res.status(200).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error al intentar activar",
+      });
+      next(e);
+    }
   },
   remove: async (req, res, next) => {
     try {
-    } catch (e) {}
+      console.log(req.body);
+      const product = await Product.findOneAndDelete({ _id: req.body._id });
+      console.log(product);
+      res.status(200).json(product);
+    } catch (e) {
+      res.status(500).send({
+        message: "Ocurrió un error al intentar activar",
+      });
+      next(e);
+    }
   },
 };
