@@ -50,7 +50,7 @@ export default {
   },
   list: async (req, res, next) => {
     try {
-      const category = await Category.find().populate("products");
+      const category = await Category.find().populate("products", {name: 1});
       res.status(200).json(category);
     } catch (e) {
       res.status(500).send({
