@@ -24,6 +24,12 @@ const productSchema = new Schema({
     type: Number,
     default: 1,
   },
+  images: [
+    {
+      type: String,
+      trim: true
+    }
+  ],
   categories: [
     {
       type: Schema.ObjectId,

@@ -1,5 +1,4 @@
-import models from "../models/models";
-const { Category } = models;
+import { Category, Product } from "../models/models";
 
 export default {
   add: async (req, res, next) => {
@@ -90,6 +89,93 @@ export default {
       next(e);
     }
   },
+  addProduct: async (req, res, next) => {
+    try {
+      const addProduct = await Category.findOne(
+        { _id: req.body._id },
+        (err, result) => {
+          try {
+            result.products.push(req.body.id_product);
+            result.save();
+          } catch (e) {
+            console.log(e);
+            next(e);
+          }
+        }
+      )
+        .clone()
+        .catch((err) => {
+          console.log(err);
+        });
+      const addCategory = await Product.findOne(
+        { _id: req.body.id_product },
+        (err, result) => {
+          try {
+            result.categories.push(req.body._id);
+            result.save();
+          } catch (e) {
+            console.log(e);
+            next(e);
+          }
+        }
+      )
+        .clone()
+        .catch((err) => {
+          console.log(err);
+        });
+
+      res.status(200).json(addCategory);
+    } catch (e) {
+      res.status(500).send({
+        message: "Error al intentar agregar categoria",
+      });
+      next(e);
+    }
+  },
+  removeProduct: async (req, res, next) => {
+    try {
+      const removedProduct = await Category.findOne(
+        { _id: req.body._id },
+        (err, result) => {
+          try {
+            result.products.pull(req.body.id_product);
+            result.save();
+          } catch (e) {
+            console.log(e);
+            next(e);
+          }
+        }
+      )
+        .clone()
+        .catch((err) => {
+          console.log(err);
+        });
+      const removedCategory = await Product.findOne(
+        { _id: req.body.id_product },
+        (err, result) => {
+          try {
+            result.categories.pull(req.body._id);
+            result.save();
+          } catch (e) {
+            console.log(e);
+            next(e);
+          }
+        }
+      )
+        .clone()
+        .catch((err) => {
+          console.log(err);
+        });
+
+      res.status(200).json(removedCategory);
+    } catch (e) {
+      res.status(500).send({
+        message: "Error al intentar quitar categoria",
+      });
+      next(e);
+    }
+  },
+
   activate: async (req, res, next) => {
     try {
       const category = await Category.findByIdAndUpdate(
