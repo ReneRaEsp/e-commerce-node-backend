@@ -1,4 +1,5 @@
-import { Category, Product } from "../models/models";
+import models from "../models/models";
+const { Category, Product } = models;
 
 export default {
   add: async (req, res, next) => {
